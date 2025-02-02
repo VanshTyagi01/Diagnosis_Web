@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosis Questions</title>
+    <link rel="stylesheet" href="./ques.css">
+    <style>
+        .question-container {
+            display: none;
+        }
+        .question-container.active {
+            display: block;
+        }
+        .navigation-buttons {
+            margin-top: 20px;
+        }
+        /* Progress bar */
+        .progress-container {
+            width: 100%;
+            background: #ccc;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Diagnosis Questions</h1>
+    </header>
+    <main>
+        <!-- Progress bar at the top -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div class="question-container active" id="question1">
+            <p>Do you have a fever?</p>
+            <button onclick="nextQuestion(1)">Yes</button>
+            <button onclick="nextQuestion(1)">No</button>
+        </div>
+        <div class="question-container" id="question2">
+            <p>Do you have a cough?</p>
+            <button onclick="nextQuestion(2)">Yes</button>
+            <button onclick="nextQuestion(2)">No</button>
+            <div class="navigation-buttons">
+                <button onclick="prevQuestion(2)">Back</button>
+            </div>
+        </div>
+        <div class="question-container" id="question3">
+            <p>Do you have a sore throat?</p>
+            <button onclick="nextQuestion(3)">Yes</button>
+            <button onclick="nextQuestion(3)">No</button>
+            <div class="navigation-buttons">
+                <button onclick="prevQuestion(3)">Back</button>
+            </div>
+        </div>
+        <div class="question-container" id="prediction">
+            <p>Your predicted disease is: <span id="predicted-disease"></span></p>
+            <div class="navigation-buttons">
+                <button onclick="window.location.href='./questions.html'">Test Again</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2023 Self Diagnosis Website. All rights reserved.</p>
+    </footer>
+    <script>
+        const totalQuestions = 3; // adjust if you add more
+        // Initialize progress when page loads
+        updateProgress(1);
+
+        function nextQuestion(current) {
+            document.getElementById('question' + current).classList.remove('active');
+            const next = current + 1;
+            if (document.getElementById('question' + next)) {
+                document.getElementById('question' + next).classList.add('active');
+                updateProgress(next);
+            } else {
+                document.getElementById('prediction').classList.add('active');
+                updateProgress(totalQuestions);
+                showPrediction();
+            }
+        }
+
+        function prevQuestion(current) {
+            document.getElementById('question' + current).classList.remove('active');
+            const prev = current - 1;
+            if (prev > 0) {
+                document.getElementById('question' + prev).classList.add('active');
+                updateProgress(prev);
+            } else {
+                // Edge case if needed
+            }
+        }
+
+        function showPrediction() {
+            // Replace this with the actual prediction logic
+            const predictedDisease = "Common Cold";
+            document.getElementById('predicted-disease').innerText = predictedDisease;
+        }
+
+        function updateProgress(step) {
+            const progressBar = document.getElementById('progress-bar');
+            // Calculate percentage based on total questions
+            const percent = (step / totalQuestions) * 100;
+            progressBar.style.width = percent + '%';
+        }
+    </script>
+</body>
+</html>
